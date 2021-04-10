@@ -1,0 +1,29 @@
+{
+    "name": "rfh-tech/backend",
+    "description": "API Service/Endpoints + Requests Load Balancer",
+    "type": "project",
+    "authors": [
+        {
+            "name": "samshal",
+            "email": "samueladeshina73@gmail.com"
+        }
+    ],
+    "config":{
+        "platform":{
+            "php":"7.2.0"
+        }
+    },
+    "require": {
+        "slim/slim": "^3.4",
+        "samshal/emmet-blue":"dev-master",
+        "samshal/emmet-blue-middeware":"dev-master",
+        "samshal/acl": "dev-master"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable":true,
+    "autoload":{
+        "psr-4":{
+            "RFHApi\\":"./src"
+        }
+    }
+}

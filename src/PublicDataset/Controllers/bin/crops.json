@@ -1,0 +1,122 @@
+[
+    {
+        "id": 1,
+        "name": "Cocoa"
+    },
+    {
+        "id": 2,
+        "name": "Coffee"
+    },
+    {
+        "id": 3,
+        "name": "Rice"
+    },
+    {
+        "id": 4,
+        "name": "Beans"
+    },
+    {
+        "id": 5,
+        "name": "Maize"
+    },
+    {
+        "id": 6,
+        "name": "Palm"
+    },
+    {
+        "id": 7,
+        "name": "Oil Palm"
+    },
+    {
+        "id": 8,
+        "name": "Pineapples"
+    },
+    {
+        "id": 9,
+        "name": "Apple"
+    },
+    {
+        "id": 10,
+        "name": "Oranges"
+    },
+    {
+        "id": 11,
+        "name": "Cotton"
+    },
+    {
+        "id": 12,
+        "name": "Tomatoes"
+    },
+    {
+        "id": 13,
+        "name": "Bananas"
+    },
+    {
+        "id": 14,
+        "name": "Citrus fruits"
+    },
+    {
+        "id": 15,
+        "name": "Coconuts"
+    },
+    {
+        "id": 16,
+        "name": "Tobacco"
+    },
+    {
+        "id": 17,
+        "name": "Cashew"
+    },
+    {
+        "id": 18,
+        "name": "Cassava"
+    },
+    {
+        "id": 19,
+        "name": "Yam"
+    },
+    {
+        "id": 20,
+        "name": "Lettuce"
+    },
+    {
+        "id": 21,
+        "name": "Onions"
+    },
+    {
+        "id": 22,
+        "name": "Pepper"
+    },
+    {
+        "id": 23,
+        "name": "Ginger"
+    },
+    {
+        "id": 24,
+        "name": "Millet"
+    },
+    {
+        "id": 25,
+        "name": "Sorghum"
+    },
+    {
+        "id": 26,
+        "name": "Rubber"
+    },
+    {
+        "id": 27,
+        "name": "Lemon"
+    },
+    {
+        "id": 28,
+        "name": "Mango"
+    },
+    {
+        "id": 28,
+        "name": "Plantain"
+    },
+    {
+        "id": 30,
+        "name": "Cocoyam"
+    }
+]

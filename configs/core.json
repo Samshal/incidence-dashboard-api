@@ -1,0 +1,10 @@
+{
+	"env":"dev",
+	"config-dir":{
+		"whitelists":"./configs/confs/api-whitelists.json",
+		"public-endpoints":"./configs/confs/public-endpoints.json",
+		"database-config":"./configs/confs/database-config.json"
+	},
+	"session-location": "",
+	"acl-location": ""
+}
