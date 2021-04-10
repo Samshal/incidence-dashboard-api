@@ -1,4 +1,4 @@
-USE RFHApiDB;
+USE IncidenceDashboard;
 
 -- This schema stores Geographic/Geospatial Features.
 -- A geographic feature is anything in the world that has a location. A feature can be:
