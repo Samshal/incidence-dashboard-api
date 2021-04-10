@@ -1,8 +1,8 @@
 use IncidenceDashboard;
 
-INSERT INTO Users_AclEndPointRules (EndPoint) VALUES 
-('user'),
-('spatial_entity');
+--INSERT INTO Users_AclEndPointRules (EndPoint) VALUES 
+--('user'),
+--('spatial_entity');
 
 INSERT INTO SpatialEntities_EntityTypes (SpatialEntityTypeName, AdminLevel) VALUES
 ('Country', 0),

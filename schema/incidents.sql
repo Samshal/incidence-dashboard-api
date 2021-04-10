@@ -40,7 +40,7 @@ CREATE TABLE Incidents_Incidents (
 	IncidentLocation INT NOT NULL,
 	IncidentDate DATETIME NOT NULL,
 	IncidentPointOfInterest POINT, 
-	IncidentDescription VARCHAR(MAX),
+	IncidentDescription TEXT,
 	DateCreated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	LastModified DATETIME,
 
