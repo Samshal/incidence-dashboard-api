@@ -10,10 +10,10 @@
  *
  */
 
-namespace RFHApi\User;
+namespace IncidenceDashboardApi\User;
 
 /**
- * class RFHApi\User\UserSession
+ * class IncidenceDashboardApi\User\UserSession
  *
  * UserSession class
  *

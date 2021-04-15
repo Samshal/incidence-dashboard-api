@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace RFHApi\Middleware;
+namespace IncidenceDashboardApi\Middleware;
 
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -28,14 +28,14 @@ class PermissionGateway implements \EmmetBlueMiddleware\MiddlewareInterface
 
 	protected static function isUserLoggedIn($userId, $sessionId, $userToken)
 	{
-		$isTokenValid = \RFHApi\User\UserSession\Session::isTokenValid($userId, ["sessionId"=>$sessionId, "token"=>$userToken]);
+		$isTokenValid = \IncidenceDashboardApi\User\UserSession\Session::isTokenValid($userId, ["sessionId"=>$sessionId, "token"=>$userToken]);
 
 		return $isTokenValid["status"];
 	}
 
 	protected static function isUserPermitted($userId, $sessionId, $endpoint)
 	{
-		$session = \RFHApi\User\UserSession\Session::load((int)$userId, (int)$sessionId);
+		$session = \IncidenceDashboardApi\User\UserSession\Session::load((int)$userId, (int)$sessionId);
 		$accountType = $session[0]["AccountTypeName"];
 
 		if (is_null($accountType)){
@@ -47,7 +47,7 @@ class PermissionGateway implements \EmmetBlueMiddleware\MiddlewareInterface
 			"endpoint"=>$endpoint
 		];
 
-		$isUserPermitted = \RFHApi\User\UserPermission\Acl::checkPermission($userId, $requestData);
+		$isUserPermitted = \IncidenceDashboardApi\User\UserPermission\Acl::checkPermission($userId, $requestData);
 
 		return $isUserPermitted["status"];
 	}

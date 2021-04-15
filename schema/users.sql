@@ -1,4 +1,4 @@
-USE RFHApiDB;
+USE IncidenceDashboardApiDB;
 
 
 CREATE TABLE Users_AccountTypes (

@@ -1,5 +1,5 @@
 {
-    "name": "rfh-tech/backend",
+    "name": "samshal/incidence-dashboard-api",
     "description": "API Service/Endpoints + Requests Load Balancer",
     "type": "project",
     "authors": [
@@ -23,7 +23,7 @@
     "prefer-stable":true,
     "autoload":{
         "psr-4":{
-            "RFHApi\\":"./src"
+            "IncidenceDashboardApi\\":"./src"
         }
     }
 }

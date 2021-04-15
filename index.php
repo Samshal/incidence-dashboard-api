@@ -1,7 +1,7 @@
 <?php
 require_once 'vendor/autoload.php';
 
-use RFHApi\Middleware\PermissionGateway as PermissionGatewayMiddleware;
+use IncidenceDashboardApi\Middleware\PermissionGateway as PermissionGatewayMiddleware;
 
 $settings = [
 	'settings'=>[
@@ -19,7 +19,7 @@ $app = new \Slim\App($settings);
 $app->post('/{version}/login', function($request, $response, $args){
 	$data = $request->getParsedBody();
 
-	$pluginResponse = RFHApi\User\UserSession::login($data);
+	$pluginResponse = IncidenceDashboardApi\User\UserSession::login($data);
 
 	if (isset($pluginResponse["status"]) && $pluginResponse["status"]){
 
@@ -69,11 +69,11 @@ $app->group('/', function(){
 			
 			$globalResponse = array_replace_recursive(
 				$globalResponseFormat, 
-				EmmetBlueMiddleware\Middleware::processor($options, "RFHApi")
+				EmmetBlueMiddleware\Middleware::processor($options, "IncidenceDashboardApi")
 			);
 
 			return $response->withJson($globalResponse["body"], $globalResponse["status"]);
-	})->add(EmmetBlueMiddleware\Middleware::validateRequest());
-})->add($permissionGatewayMiddleware->getStandardResponse());
+	}); //->add(EmmetBlueMiddleware\Middleware::validateRequest());
+}); //->add($permissionGatewayMiddleware->getStandardResponse());
 
 $app->run();

@@ -11,13 +11,13 @@
  */
 
 
-namespace RFHApi\PublicDataset\Controllers;
+namespace IncidenceDashboardApi\PublicDataset\Controllers;
 
 use EmmetBlue\Core\Connection\ConnectionAdapter;
 
 
 /**
- * class RFHApi\PublicDataset\Controllers\World
+ * class IncidenceDashboardApi\PublicDataset\Controllers\World
  *
  * World Controller
  *

@@ -81,7 +81,7 @@ class Account {
 	}
 
 	public static function updateKycGroup(int $userId){
-		$currGroup = \RFHApi\User\UserAccount\UserKyc::determineKycGroup($userId)["GroupId"];
+		$currGroup = \IncidenceDashboardApi\User\UserAccount\UserKyc::determineKycGroup($userId)["GroupId"];
 		
 		$result = -1;
 

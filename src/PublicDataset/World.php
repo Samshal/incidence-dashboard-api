@@ -10,10 +10,10 @@
  *
  */
 
-namespace RFHApi\PublicDataset;
+namespace IncidenceDashboardApi\PublicDataset;
 
 /**
- * class RFHApi\PublicDataset\World
+ * class IncidenceDashboardApi\PublicDataset\World
  *
  * World Visitor
  * 

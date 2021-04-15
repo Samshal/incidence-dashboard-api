@@ -60,3 +60,5 @@ CREATE TABLE SpatialEntities_EntityMetadata (
 	CONSTRAINT fk_EntityMetadata_SpatialEntities_MetadataFields_FieldId
 		FOREIGN KEY (FieldId) REFERENCES SpatialEntities_MetadataFields (FieldId) ON UPDATE CASCADE ON DELETE CASCADE 
 );
+
+-- CREATE SPATIAL INDEX EntityGeometry ON SpatialEntities_Entities (EntityGeometry);
