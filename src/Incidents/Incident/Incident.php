@@ -27,50 +27,30 @@ class Incident {
         $name = $data["name"];
         $type = $data["type"];
         $location = $data["location"];
-        $data = $data["date"];
-        $pointOfInterest = $data["pointOfInterest"] ?? NULL;
+        $date = date("Y-m-d H:i:s", strtotime($data["date"]));
+
+        $pointOfInterest = $data["pointOfInterest"] ?? 'POINT(0 0)';
         $description = $data["description"] ?? "";
 
-        $query = "INSERT INTO Incidents_Incidents(IncidentName, IncidentType, IncidentLocation, IncidentDate, IncidentPointOfInterest, IncidentDescription) VALUES ()"
+        $metadata = $data["metadata"] ?? [];
 
-        $result = DBQueryFactory::insert("Incidents_IncidentCategories", $inputData, false);
+        $query = "INSERT INTO Incidents_Incidents(IncidentName, IncidentType, IncidentLocation, IncidentDate, IncidentPointOfInterest, IncidentDescription) VALUES ('$name', $type, $location, '$date', ST_GeomFromText('$pointOfInterest'), '$description');";
 
-        if (!$result['lastInsertId']){
-            //throw an exception, insert was unsuccessful
-        }   
+        $result = DBConnectionFactory::getConnection()->exec($query);
         
         return $result;
     }
 
-	public static function newIncident(array $data){
-        $name = $data["name"];
-        $category = $data["category"];
-        $description = $data["description"] ?? "";
+    public static function viewIncidents(){
+        $query = "SELECT a.IncidentId, a.IncidentName, a.IncidentDate, ST_asText(a.IncidentPointOfInterest) as IncidentPointOfInterest, b.*, c.* FROM Incidents_Incidents a INNER JOIN Incidents_IncidentTypes b ON a.IncidentType = b.IncidentTypeId INNER JOIN SpatialEntities_Entities c ON a.IncidentLocation = c.EntityId";
 
-        $inputData = [
-            "IncidentName"=>QB::wrapString($name, "'"),
-            "IncidentCategoryId"=>$category,
-            "IncidentDescription"=>QB::wrapString($description, "'")
-        ];
-
-        $result = DBQueryFactory::insert("Incidents_Incidents", $inputData, false);
-
-        if (!$result['lastInsertId']){
-			//throw an exception, insert was unsuccessful
-		}	
-		
-		return $result;
-    }
-
-    public static function viewCategories(){
-        $query = "SELECT * FROM Incidents_IncidentCategories";
         $result = DBConnectionFactory::getConnection()->query($query)->fetchAll(\PDO::FETCH_ASSOC);
 
         return $result;
     }
 
-    public static function viewIncidents(int $categoryId=0){
-        $query = "SELECT * FROM Incidents_Incidents WHERE IncidentCategoryId = $categoryId";
+    public static function viewIncident(int $resourceId){
+        $query = "SELECT a.IncidentId, a.IncidentName, a.IncidentDate, ST_asText(a.IncidentPointOfInterest) as IncidentPointOfInterest, b.*, c.* FROM Incidents_Incidents a INNER JOIN Incidents_IncidentTypes b ON a.IncidentType = b.IncidentTypeId INNER JOIN SpatialEntities_Entities c ON a.IncidentLocation = c.EntityId WHERE a.IncidentId = $resourceId";
         $result = DBConnectionFactory::getConnection()->query($query)->fetchAll(\PDO::FETCH_ASSOC);
 
         return $result;
