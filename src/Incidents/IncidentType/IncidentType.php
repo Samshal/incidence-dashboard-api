@@ -69,7 +69,12 @@ class IncidentType {
     }
 
     public static function viewIncidentTypes(int $categoryId=0){
-        $query = "SELECT * FROM Incidents_IncidentTypes WHERE IncidentCategoryId = $categoryId";
+        $query = "SELECT * FROM Incidents_IncidentTypes a INNER JOIN Incidents_IncidentCategories b ON a.IncidentCategoryId = b.IncidentCategoryId";
+
+        if ($categoryId != 0){
+            $query .= " WHERE a.IncidentCategoryId = $categoryId";
+        }
+
         $result = DBConnectionFactory::getConnection()->query($query)->fetchAll(\PDO::FETCH_ASSOC);
 
         return $result;
