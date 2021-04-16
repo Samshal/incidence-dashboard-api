@@ -12,6 +12,7 @@ $settings = [
 
 header('Access-Control-Allow-Headers: Content-Type, Cache-Control, X-Requested-With, Authorization');
 header('Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS');
+header('Access-Control-Allow-Origin: *');
 
 $permissionGatewayMiddleware = new PermissionGatewayMiddleware();
 $app = new \Slim\App($settings);
