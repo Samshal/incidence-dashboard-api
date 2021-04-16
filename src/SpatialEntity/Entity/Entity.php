@@ -40,7 +40,7 @@ class Entity {
             "EntityDescription"=>QB::wrapString($description, "'")
         ];
 
-        if (!is_null($parentId)){
+        if (!is_null($parentId) && $parentId != 0){
             $inputData["EntityParent"] = $parentId;
         }
 
@@ -59,7 +59,7 @@ class Entity {
 
     public static function viewEntitiesByType(array $data){
         $type = $data["entityType"];
-        $query = "SELECT EntityId, EntityName, EntityType, ST_AsText(EntityGeometry) as EntityGeometry, EntityDescription, DateCreated, LastModified FROM SpatialEntities_Entities WHERE EntityType = $type";
+        $query = "SELECT a.EntityId, a.EntityName, a.EntityType, ST_AsText(a.EntityGeometry) as EntityGeometry, a.EntityDescription, a.DateCreated, a.LastModified, b.EntityName as EntityParent FROM SpatialEntities_Entities a LEFT OUTER JOIN SpatialEntities_Entities b ON a.EntityParent = b.EntityId WHERE a.EntityType = $type";
         $result = DBConnectionFactory::getConnection()->query($query)->fetchAll(\PDO::FETCH_ASSOC);
 
         return $result;

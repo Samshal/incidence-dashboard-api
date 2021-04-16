@@ -50,6 +50,15 @@ CREATE TABLE Incidents_Incidents (
 		FOREIGN KEY (IncidentLocation) REFERENCES SpatialEntities_Entities (EntityId) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
+CREATE TABLE Incidents_MetadataFieldValues (
+	ValueId INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	Field VARCHAR(50) NOT NULL,
+	Value VARCHAR(256) NOT NULL,
+	UNIQUE(Field, Value),
+	CONSTRAINT fk_field_value 
+		FOREIGN KEY (Field) REFERENCES Incidents_MetadataFields (FieldName) ON UPDATE CASCADE ON DELETE NO ACTION 
+);
+
 CREATE TABLE Incidents_IncidentMetadata (
 	MetadataId INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	IncidentId INT NOT NULL,
