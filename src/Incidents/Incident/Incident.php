@@ -42,11 +42,13 @@ class Incident {
         $incidentId = $connection->lastInsertId();
         if (count($metadata) > 0){
             $meta = [];
-            foreach($metadata as $key=>$value){
-                $meta[] = "($incidentId, $key, '$value')";
+            foreach($metadata as $value){
+                $key = array_keys($value)[0];
+                $value = $value[$key];
+                $meta[] = "($incidentId, '$key', '$value')";
             }
 
-            $query = "INSERT INTO Incidents_IncidentMetadata (IncidentId, FieldId, FieldValue) VALUES ".implode(",", $meta);
+            $query = "INSERT INTO Incidents_IncidentMetadata (IncidentId, Field, FieldValue) VALUES ".implode(",", $meta);
             $result = $connection->exec($query);
         }
         

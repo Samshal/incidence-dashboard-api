@@ -62,7 +62,7 @@ CREATE TABLE Incidents_MetadataFieldValues (
 CREATE TABLE Incidents_IncidentMetadata (
 	MetadataId INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	IncidentId INT NOT NULL,
-	FieldId INT NOT NULL,
+	Field VARCHAR(50) NOT NULL,
 	FieldValue VARCHAR(256),
 	DateCreated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	LastModified DATETIME,
@@ -70,5 +70,5 @@ CREATE TABLE Incidents_IncidentMetadata (
 	CONSTRAINT fk_IncidentMetadata_Incidents_Entities_IncidentId
 		FOREIGN KEY (IncidentId) REFERENCES Incidents_Incidents (IncidentId) ON UPDATE CASCADE ON DELETE CASCADE,
 	CONSTRAINT fk_IncidentMetadata_Incidents_MetadataFields_FieldId
-		FOREIGN KEY (FieldId) REFERENCES Incidents_MetadataFields (FieldId) ON UPDATE CASCADE ON DELETE CASCADE 
+		FOREIGN KEY (Field) REFERENCES Incidents_MetadataFields (FieldName) ON UPDATE CASCADE ON DELETE NO ACTION 
 );
