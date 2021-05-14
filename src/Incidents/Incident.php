@@ -24,8 +24,8 @@ class Incident {
 		return $return_result;
 	}
 
-	public static function viewIncidents(){
-		return Incident\Incident::viewIncidents();
+	public static function viewIncidents(array $data){
+		return Incident\Incident::viewIncidents($data);
 	}
 	
 	public static function viewIncident(int $incidentId){

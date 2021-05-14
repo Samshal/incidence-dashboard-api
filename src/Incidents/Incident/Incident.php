@@ -55,8 +55,34 @@ class Incident {
         return ["lastInsertId"=>$incidentId];
     }
 
-    public static function viewIncidents(){
-        $query = "SELECT a.IncidentId, a.IncidentName, a.IncidentDate, ST_asText(a.IncidentPointOfInterest) as IncidentPointOfInterest, a.IncidentDescription, b.IncidentTypeName, d.IncidentCategoryName, c.EntityName as Locality, e.EntityName as LGA, f.EntityName as State, g.EntityName as Region FROM Incidents_Incidents a INNER JOIN Incidents_IncidentTypes b ON a.IncidentType = b.IncidentTypeId INNER JOIN SpatialEntities_Entities c ON a.IncidentLocation = c.EntityId INNER JOIN Incidents_IncidentCategories d ON b.IncidentCategoryId = d.IncidentCategoryId INNER JOIN SpatialEntities_Entities e ON c.EntityParent = e.EntityId INNER JOIN SpatialEntities_Entities f ON e.EntityParent = f.EntityId INNER JOIN SpatialEntities_Entities g ON f.EntityParent = g.EntityId ORDER BY a.DateCreated DESC LIMIT 20";
+    public static function viewIncidents(array $data){
+    	$limit = $data["length"] ?? 10;
+    	$offset = $data["start"] ?? 0;
+    	$search = $data["search"] ?? "";
+
+        $query = "SELECT a.IncidentId, a.IncidentName, a.IncidentDate, ST_asText(a.IncidentPointOfInterest) as IncidentPointOfInterest, a.IncidentDescription, b.IncidentTypeName, d.IncidentCategoryName, c.EntityName as Locality, e.EntityName as LGA, f.EntityName as State, g.EntityName as Region FROM Incidents_Incidents a INNER JOIN Incidents_IncidentTypes b ON a.IncidentType = b.IncidentTypeId INNER JOIN SpatialEntities_Entities c ON a.IncidentLocation = c.EntityId INNER JOIN Incidents_IncidentCategories d ON b.IncidentCategoryId = d.IncidentCategoryId INNER JOIN SpatialEntities_Entities e ON c.EntityParent = e.EntityId INNER JOIN SpatialEntities_Entities f ON e.EntityParent = f.EntityId INNER JOIN SpatialEntities_Entities g ON f.EntityParent = g.EntityId";
+
+        if ($search != ""){
+        	$keywords = explode(" ", $search);
+        	$squery = [];
+        	foreach ($keywords as $keyword){
+	        	$squery[] = " (
+	        		a.IncidentName LIKE '%$keyword%' OR
+	        		a.IncidentDescription LIKE '%$keyword%' OR
+	        		b.IncidentTypeName LIKE '%$keyword%' OR
+	        		d.IncidentCategoryName LIKE '%$keyword%' OR
+	        		c.EntityName LIKE '%$keyword%' OR
+	        		e.EntityName LIKE '%$keyword%' OR
+	        		f.EntityName LIKE '%$keyword%' OR
+	        		g.EntityName LIKE '%$keyword%'
+	        	)";
+        	}
+
+        	$query .= " WHERE ".implode(" AND ", $squery);
+        }
+
+        $cquery = $query;
+        $query .= " ORDER BY a.DateCreated DESC LIMIT $limit OFFSET $offset";
 
         $result = DBConnectionFactory::getConnection()->query($query)->fetchAll(\PDO::FETCH_ASSOC);
         foreach($result as $key=>$data){
@@ -64,6 +90,15 @@ class Incident {
             $_result = DBConnectionFactory::getConnection()->query($query)->fetchAll(\PDO::FETCH_ASSOC);
             $result[$key]["metadata"] = $_result;
         }
+
+        $cresult = DBConnectionFactory::getConnection()->query($cquery)->fetchAll(\PDO::FETCH_ASSOC);
+        $total = count($cresult);
+
+        $result = [
+        	"data"=>$result,
+        	"recordsFiltered"=>$total,
+        	"recordsTotal"=>$limit
+        ];
 
         return $result;
     }
