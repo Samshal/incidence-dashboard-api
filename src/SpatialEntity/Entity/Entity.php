@@ -45,7 +45,7 @@ class Entity {
         }
 
         if (!is_null($geometry)){
-            $inputData["EntityGeometry"] = "ST_GeomFromText('$geometry')";
+            $inputData["EntityGeometry"] = "'$geometry')";
         }
 
         $result = DBQueryFactory::insert("SpatialEntities_Entities", $inputData, false);
@@ -59,7 +59,7 @@ class Entity {
 
     public static function viewEntitiesByType(array $data){
         $type = $data["entityType"];
-        $query = "SELECT a.EntityId, a.EntityName, a.EntityType, ST_AsText(a.EntityGeometry) as EntityGeometry, a.EntityDescription, a.DateCreated, a.LastModified, b.EntityName as EntityParent FROM SpatialEntities_Entities a LEFT OUTER JOIN SpatialEntities_Entities b ON a.EntityParent = b.EntityId WHERE a.EntityType = $type";
+        $query = "SELECT a.EntityId, a.EntityName, a.EntityType, a.EntityGeometry as EntityGeometry, a.EntityDescription, a.DateCreated, a.LastModified, b.EntityName as EntityParent FROM SpatialEntities_Entities a LEFT OUTER JOIN SpatialEntities_Entities b ON a.EntityParent = b.EntityId WHERE a.EntityType = $type";
         $result = DBConnectionFactory::getConnection()->query($query)->fetchAll(\PDO::FETCH_ASSOC);
 
         return $result;
@@ -67,7 +67,7 @@ class Entity {
 
     public static function viewEntityChildren(array $data){
         $entity = $data["entityId"];
-        $query = "SELECT EntityId, EntityName, EntityType, ST_AsText(EntityGeometry) as EntityGeometry, EntityDescription, DateCreated, LastModified FROM SpatialEntities_Entities WHERE EntityParent = $entity";
+        $query = "SELECT EntityId, EntityName, EntityType, EntityGeometry as EntityGeometry, EntityDescription, DateCreated, LastModified FROM SpatialEntities_Entities WHERE EntityParent = $entity";
         $result = DBConnectionFactory::getConnection()->query($query)->fetchAll(\PDO::FETCH_ASSOC);
 
         return $result;

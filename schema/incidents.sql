@@ -35,7 +35,7 @@ CREATE TABLE Incidents_MetadataFields (
 
 CREATE TABLE Incidents_Incidents (
 	IncidentId INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-	IncidentName VARCHAR(256),
+	IncidentName VARCHAR(6555),
 	IncidentType INT NOT NULL,
 	IncidentLocation INT NOT NULL,
 	IncidentDate DATETIME NOT NULL,
