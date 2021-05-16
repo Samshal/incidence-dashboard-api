@@ -59,6 +59,8 @@ class Incident {
     	$limit = $data["length"] ?? 10;
     	$offset = $data["start"] ?? 0;
     	$search = $data["search"] ?? "";
+    	$sDate = $data["startDate"] ?? "";
+    	$eDate = $data["endDate"] ?? "";
 
         $query = "SELECT a.IncidentId, a.IncidentName, a.IncidentDate, ST_asText(a.IncidentPointOfInterest) as IncidentPointOfInterest, a.IncidentDescription, b.IncidentTypeName, d.IncidentCategoryName, c.EntityName as Locality, e.EntityName as LGA, f.EntityName as State, g.EntityName as Region FROM Incidents_Incidents a INNER JOIN Incidents_IncidentTypes b ON a.IncidentType = b.IncidentTypeId INNER JOIN SpatialEntities_Entities c ON a.IncidentLocation = c.EntityId INNER JOIN Incidents_IncidentCategories d ON b.IncidentCategoryId = d.IncidentCategoryId INNER JOIN SpatialEntities_Entities e ON c.EntityParent = e.EntityId INNER JOIN SpatialEntities_Entities f ON e.EntityParent = f.EntityId INNER JOIN SpatialEntities_Entities g ON f.EntityParent = g.EntityId";
 
@@ -78,8 +80,15 @@ class Incident {
 	        	)";
         	}
 
-        	$query .= " WHERE ".implode(" AND ", $squery);
+        	$query .= " WHERE (".implode(" AND ", $squery).")";
         }
+
+        if ($sDate !== "" && $eDate !== ""){
+        	$sDate = $sDate." 00:00:00";
+        	$eDate = $eDate." 23:59:59";
+
+    		$query .= " AND (a.IncidentDate BETWEEN '$sDate' AND '$eDate')";
+    	}
 
         $cquery = $query;
         $query .= " ORDER BY a.DateCreated DESC LIMIT $limit OFFSET $offset";
