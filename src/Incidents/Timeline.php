@@ -23,4 +23,10 @@ class Timeline {
 
 		return $return_result;
 	}
+
+	public static function getIncidentsGeojson(array $data){
+		$return_result = Timeline\IncidentTimeline::getIncidentsGeojson($data);
+
+		return $return_result;
+	}
 }

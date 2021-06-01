@@ -91,7 +91,11 @@ class Incident {
     	}
 
         $cquery = $query;
-        $query .= " ORDER BY a.DateCreated DESC LIMIT $limit OFFSET $offset";
+        $query .= " ORDER BY a.DateCreated DESC";
+
+        if ($limit != -1){
+            $query .= " LIMIT $limit OFFSET $offset";
+        }
 
         $result = DBConnectionFactory::getConnection()->query($query)->fetchAll(\PDO::FETCH_ASSOC);
         foreach($result as $key=>$data){
