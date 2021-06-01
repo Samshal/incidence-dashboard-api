@@ -34,7 +34,7 @@ class Incident {
 
         $metadata = $data["metadata"] ?? [];
 
-        $query = "INSERT INTO Incidents_Incidents(IncidentName, IncidentType, IncidentLocation, IncidentDate, IncidentPointOfInterest, IncidentDescription) VALUES ('$name', $type, $location, '$date', ST_GeomFromText('$pointOfInterest'), '$description');";
+        $query = "INSERT INTO incidents_incidents(IncidentName, IncidentType, IncidentLocation, IncidentDate, IncidentPointOfInterest, IncidentDescription) VALUES ('$name', $type, $location, '$date', ST_GeomFromText('$pointOfInterest'), '$description');";
 
         $connection = DBConnectionFactory::getConnection();
         $result = $connection->exec($query);
@@ -48,7 +48,7 @@ class Incident {
                 $meta[] = "($incidentId, '$key', '$value')";
             }
 
-            $query = "INSERT INTO Incidents_IncidentMetadata (IncidentId, Field, FieldValue) VALUES ".implode(",", $meta);
+            $query = "INSERT INTO incidents_incidentmetadata (IncidentId, Field, FieldValue) VALUES ".implode(",", $meta);
             $result = $connection->exec($query);
         }
         
@@ -62,7 +62,7 @@ class Incident {
     	$sDate = $data["startDate"] ?? "";
     	$eDate = $data["endDate"] ?? "";
 
-        $query = "SELECT a.IncidentId, a.IncidentName, a.IncidentDate, ST_asText(a.IncidentPointOfInterest) as IncidentPointOfInterest, a.IncidentDescription, b.IncidentTypeName, d.IncidentCategoryName, c.EntityName as Locality, e.EntityName as LGA, f.EntityName as State, g.EntityName as Region FROM Incidents_Incidents a INNER JOIN Incidents_IncidentTypes b ON a.IncidentType = b.IncidentTypeId INNER JOIN SpatialEntities_Entities c ON a.IncidentLocation = c.EntityId INNER JOIN Incidents_IncidentCategories d ON b.IncidentCategoryId = d.IncidentCategoryId INNER JOIN SpatialEntities_Entities e ON c.EntityParent = e.EntityId INNER JOIN SpatialEntities_Entities f ON e.EntityParent = f.EntityId INNER JOIN SpatialEntities_Entities g ON f.EntityParent = g.EntityId";
+        $query = "SELECT a.IncidentId, a.IncidentName, a.IncidentDate, ST_asText(a.IncidentPointOfInterest) as IncidentPointOfInterest, a.IncidentDescription, b.IncidentTypeName, d.IncidentCategoryName, c.EntityName as Locality, e.EntityName as LGA, f.EntityName as State, g.EntityName as Region FROM incidents_incidents a INNER JOIN incidents_incidenttypes b ON a.IncidentType = b.IncidentTypeId INNER JOIN spatialentities_entities c ON a.IncidentLocation = c.EntityId INNER JOIN incidents_incidentcategories d ON b.IncidentCategoryId = d.IncidentCategoryId INNER JOIN spatialentities_entities e ON c.EntityParent = e.EntityId INNER JOIN spatialentities_entities f ON e.EntityParent = f.EntityId INNER JOIN spatialentities_entities g ON f.EntityParent = g.EntityId";
 
         if ($search != ""){
         	$keywords = explode(" ", $search);
@@ -99,7 +99,7 @@ class Incident {
 
         $result = DBConnectionFactory::getConnection()->query($query)->fetchAll(\PDO::FETCH_ASSOC);
         foreach($result as $key=>$data){
-            $query = "SELECT * FROM Incidents_IncidentMetadata a WHERE a.IncidentId = ".$data['IncidentId'];
+            $query = "SELECT * FROM incidents_incidentmetadata a WHERE a.IncidentId = ".$data['IncidentId'];
             $_result = DBConnectionFactory::getConnection()->query($query)->fetchAll(\PDO::FETCH_ASSOC);
             $result[$key]["metadata"] = $_result;
         }
@@ -117,11 +117,11 @@ class Incident {
     }
 
     public static function viewIncident(int $resourceId){
-        $query = "SELECT a.IncidentId, a.IncidentName, a.IncidentDate, ST_asText(a.IncidentPointOfInterest) as IncidentPointOfInterest, a.IncidentDescription, b.IncidentTypeName, d.IncidentCategoryName, c.EntityName as Locality, e.EntityName as LGA, f.EntityName as State, g.EntityName as Region FROM Incidents_Incidents a INNER JOIN Incidents_IncidentTypes b ON a.IncidentType = b.IncidentTypeId INNER JOIN SpatialEntities_Entities c ON a.IncidentLocation = c.EntityId INNER JOIN Incidents_IncidentCategories d ON b.IncidentCategoryId = d.IncidentCategoryId INNER JOIN SpatialEntities_Entities e ON c.EntityParent = e.EntityId INNER JOIN SpatialEntities_Entities f ON e.EntityParent = f.EntityId INNER JOIN SpatialEntities_Entities g ON f.EntityParent = g.EntityId WHERE a.IncidentId = $resourceId";
+        $query = "SELECT a.IncidentId, a.IncidentName, a.IncidentDate, ST_asText(a.IncidentPointOfInterest) as IncidentPointOfInterest, a.IncidentDescription, b.IncidentTypeName, d.IncidentCategoryName, c.EntityName as Locality, e.EntityName as LGA, f.EntityName as State, g.EntityName as Region FROM incidents_incidents a INNER JOIN incidents_incidenttypes b ON a.IncidentType = b.IncidentTypeId INNER JOIN spatialentities_entities c ON a.IncidentLocation = c.EntityId INNER JOIN incidents_incidentcategories d ON b.IncidentCategoryId = d.IncidentCategoryId INNER JOIN spatialentities_entities e ON c.EntityParent = e.EntityId INNER JOIN spatialentities_entities f ON e.EntityParent = f.EntityId INNER JOIN spatialentities_entities g ON f.EntityParent = g.EntityId WHERE a.IncidentId = $resourceId";
 
         $result = DBConnectionFactory::getConnection()->query($query)->fetchAll(\PDO::FETCH_ASSOC);
         foreach($result as $key=>$data){
-            $query = "SELECT * FROM Incidents_IncidentMetadata a WHERE a.IncidentId = ".$data['IncidentId'];
+            $query = "SELECT * FROM incidents_incidentmetadata a WHERE a.IncidentId = ".$data['IncidentId'];
             $_result = DBConnectionFactory::getConnection()->query($query)->fetchAll(\PDO::FETCH_ASSOC);
             $result[$key]["metadata"] = $_result;
         }
