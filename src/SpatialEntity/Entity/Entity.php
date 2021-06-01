@@ -48,7 +48,7 @@ class Entity {
             $inputData["EntityGeometry"] = "'$geometry')";
         }
 
-        $result = DBQueryFactory::insert("SpatialEntities_Entities", $inputData, false);
+        $result = DBQueryFactory::insert("spatialentities_entities", $inputData, false);
 
         if (!$result['lastInsertId']){
 			//throw an exception, insert was unsuccessful
@@ -59,7 +59,7 @@ class Entity {
 
     public static function viewEntitiesByType(array $data){
         $type = $data["entityType"];
-        $query = "SELECT a.EntityId, a.EntityName, a.EntityType, a.EntityGeometry as EntityGeometry, a.EntityDescription, a.DateCreated, a.LastModified, b.EntityName as EntityParent FROM SpatialEntities_Entities a LEFT OUTER JOIN SpatialEntities_Entities b ON a.EntityParent = b.EntityId WHERE a.EntityType = $type";
+        $query = "SELECT a.EntityId, a.EntityName, a.EntityType, a.EntityGeometry as EntityGeometry, a.EntityDescription, a.DateCreated, a.LastModified, b.EntityName as EntityParent FROM spatialentities_entities a LEFT OUTER JOIN spatialentities_entities b ON a.EntityParent = b.EntityId WHERE a.EntityType = $type";
         $result = DBConnectionFactory::getConnection()->query($query)->fetchAll(\PDO::FETCH_ASSOC);
 
         return $result;
@@ -67,14 +67,14 @@ class Entity {
 
     public static function viewEntityChildren(array $data){
         $entity = $data["entityId"];
-        $query = "SELECT EntityId, EntityName, EntityType, EntityGeometry as EntityGeometry, EntityDescription, DateCreated, LastModified FROM SpatialEntities_Entities WHERE EntityParent = $entity";
+        $query = "SELECT EntityId, EntityName, EntityType, EntityGeometry as EntityGeometry, EntityDescription, DateCreated, LastModified FROM spatialentities_entities WHERE EntityParent = $entity";
         $result = DBConnectionFactory::getConnection()->query($query)->fetchAll(\PDO::FETCH_ASSOC);
 
         return $result;
     }
 
     public static function viewEntityTypes(){
-        $query = "SELECT * FROM SpatialEntities_EntityTypes;";
+        $query = "SELECT * FROM spatialentities_entitytypes;";
         $result = DBConnectionFactory::getConnection()->query($query)->fetchAll(\PDO::FETCH_ASSOC);
 
         return $result;
