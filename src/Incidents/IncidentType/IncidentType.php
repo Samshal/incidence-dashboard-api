@@ -32,7 +32,7 @@ class IncidentType {
             "IncidentCategoryDescription"=>QB::wrapString($description, "'")
         ];
 
-        $result = DBQueryFactory::insert("Incidents_IncidentCategories", $inputData, false);
+        $result = DBQueryFactory::insert("incidents_incidentcategories", $inputData, false);
 
         if (!$result['lastInsertId']){
             //throw an exception, insert was unsuccessful
@@ -52,7 +52,7 @@ class IncidentType {
             "IncidentTypeDescription"=>QB::wrapString($description, "'")
         ];
 
-        $result = DBQueryFactory::insert("Incidents_IncidentTypes", $inputData, false);
+        $result = DBQueryFactory::insert("incidents_incidenttypes", $inputData, false);
 
         if (!$result['lastInsertId']){
 			//throw an exception, insert was unsuccessful
@@ -62,14 +62,14 @@ class IncidentType {
     }
 
     public static function viewCategories(){
-        $query = "SELECT * FROM Incidents_IncidentCategories";
+        $query = "SELECT * FROM incidents_incidentcategories";
         $result = DBConnectionFactory::getConnection()->query($query)->fetchAll(\PDO::FETCH_ASSOC);
 
         return $result;
     }
 
     public static function viewIncidentTypes(int $categoryId=0){
-        $query = "SELECT * FROM Incidents_IncidentTypes a INNER JOIN Incidents_IncidentCategories b ON a.IncidentCategoryId = b.IncidentCategoryId";
+        $query = "SELECT * FROM incidents_incidenttypes a INNER JOIN incidents_incidentcategories b ON a.IncidentCategoryId = b.IncidentCategoryId";
 
         if ($categoryId != 0){
             $query .= " WHERE a.IncidentCategoryId = $categoryId";

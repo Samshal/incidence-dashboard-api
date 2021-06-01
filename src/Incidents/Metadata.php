@@ -30,7 +30,7 @@ class Metadata {
             "Value"=>QB::wrapString($value, "'")
         ];
 
-        $result = DBQueryFactory::insert("Incidents_MetadataFieldValues", $inputData, false);
+        $result = DBQueryFactory::insert("incidents_metadatafieldvalues", $inputData, false);
 
         if (!$result['lastInsertId']){
             //throw an exception, insert was unsuccessful
@@ -41,7 +41,7 @@ class Metadata {
 
     public static function viewValues(array $data){
         $field = $data["field"];
-        $query = "SELECT * FROM Incidents_MetadataFieldValues WHERE Field = '$field'";
+        $query = "SELECT * FROM incidents_metadatafieldvalues WHERE Field = '$field'";
         $result = DBConnectionFactory::getConnection()->query($query)->fetchAll(\PDO::FETCH_ASSOC);
 
         return $result;
