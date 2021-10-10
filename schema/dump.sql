@@ -28,7 +28,7 @@ CREATE TABLE `incidents_incidentcategories` (
   `IncidentCategoryDescription` varchar(500) DEFAULT NULL,
   PRIMARY KEY (`IncidentCategoryId`),
   UNIQUE KEY `IncidentCategoryName` (`IncidentCategoryName`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -53,14 +53,14 @@ CREATE TABLE `incidents_incidentmetadata` (
   `IncidentId` int NOT NULL,
   `Field` varchar(50) NOT NULL,
   `FieldValue` varchar(256) DEFAULT NULL,
-  `DateCreated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `DateCreated` datetime NOT NULL DEFAULT TIMESTAMP,
   `LastModified` datetime DEFAULT NULL,
   PRIMARY KEY (`MetadataId`),
   KEY `fk_IncidentMetadata_Incidents_Entities_IncidentId` (`IncidentId`),
   KEY `fk_IncidentMetadata_Incidents_MetadataFields_FieldId` (`Field`),
   CONSTRAINT `fk_IncidentMetadata_Incidents_Entities_IncidentId` FOREIGN KEY (`IncidentId`) REFERENCES `incidents_incidents` (`IncidentId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_IncidentMetadata_Incidents_MetadataFields_FieldId` FOREIGN KEY (`Field`) REFERENCES `incidents_metadatafields` (`FieldName`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=11566 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11566 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -81,21 +81,18 @@ DROP TABLE IF EXISTS `incidents_incidents`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `incidents_incidents` (
-  `IncidentId` int NOT NULL AUTO_INCREMENT,
+  `IncidentId` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `IncidentName` varchar(6555) DEFAULT NULL,
   `IncidentType` int NOT NULL,
   `IncidentLocation` int NOT NULL,
   `IncidentDate` datetime NOT NULL,
   `IncidentPointOfInterest` point DEFAULT NULL,
   `IncidentDescription` text,
-  `DateCreated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `LastModified` datetime DEFAULT NULL,
-  PRIMARY KEY (`IncidentId`),
-  KEY `fk_Incidents_IncidentTypes_IncidentTypeId` (`IncidentType`),
-  KEY `fk_Entities_Incidents_Entities_Incidents_IncidentId` (`IncidentLocation`),
-  CONSTRAINT `fk_Entities_Incidents_Entities_Incidents_IncidentId` FOREIGN KEY (`IncidentLocation`) REFERENCES `spatialentities_entities` (`EntityId`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `fk_Incidents_IncidentTypes_IncidentTypeId` FOREIGN KEY (`IncidentType`) REFERENCES `incidents_incidenttypes` (`IncidentTypeId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2037 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `DateCreated` datetime NOT NULL DEFAULT TIMESTAMP,
+  `LastModified` datetime,
+  FOREIGN KEY (`IncidentLocation`) REFERENCES `spatialentities_entities` (`EntityId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (`IncidentType`) REFERENCES `incidents_incidenttypes` (`IncidentTypeId`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=2037 DEFAULT CHARSET=utf8mb4; COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -123,7 +120,7 @@ CREATE TABLE `incidents_incidenttypes` (
   PRIMARY KEY (`IncidentTypeId`),
   UNIQUE KEY `u_Incident_Type_Category` (`IncidentCategoryId`,`IncidentTypeName`),
   CONSTRAINT `fk_IncidentCategoryId_IncidentCategories_CategoryId` FOREIGN KEY (`IncidentCategoryId`) REFERENCES `incidents_incidentcategories` (`IncidentCategoryId`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -152,7 +149,7 @@ CREATE TABLE `incidents_metadatafields` (
   UNIQUE KEY `FieldName` (`FieldName`),
   KEY `fk_MetadataFields_Incidents_MetadataFieldTypes` (`FieldType`),
   CONSTRAINT `fk_MetadataFields_Incidents_MetadataFieldTypes` FOREIGN KEY (`FieldType`) REFERENCES `incidents_metadatafieldtypes` (`TypeName`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -176,7 +173,7 @@ CREATE TABLE `incidents_metadatafieldtypes` (
   `TypeName` varchar(50) NOT NULL,
   `TypeDescription` varchar(500) DEFAULT NULL,
   PRIMARY KEY (`TypeName`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -203,7 +200,7 @@ CREATE TABLE `incidents_metadatafieldvalues` (
   PRIMARY KEY (`ValueId`),
   UNIQUE KEY `Field` (`Field`,`Value`),
   CONSTRAINT `fk_field_value` FOREIGN KEY (`Field`) REFERENCES `incidents_metadatafields` (`FieldName`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=261 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=261 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -230,7 +227,7 @@ CREATE TABLE `spatialentities_entities` (
   `EntityParent` int DEFAULT NULL,
   `EntityGeometry` geometry /*!80003 SRID 0 */ DEFAULT NULL,
   `EntityDescription` varchar(500) DEFAULT NULL,
-  `DateCreated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `DateCreated` datetime NOT NULL DEFAULT TIMESTAMP,
   `LastModified` datetime DEFAULT NULL,
   PRIMARY KEY (`EntityId`),
   UNIQUE KEY `u_Entity_EntityName_EntityType` (`EntityName`,`EntityType`),
@@ -238,7 +235,7 @@ CREATE TABLE `spatialentities_entities` (
   KEY `fk_Entities_SpatialEntities_Entities_SpatialEntities_EntityId` (`EntityParent`),
   CONSTRAINT `fk_Entities_SpatialEntities_Entities_SpatialEntities_EntityId` FOREIGN KEY (`EntityParent`) REFERENCES `spatialentities_entities` (`EntityId`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `fk_Entities_SpatialEntities_EntityTypes_SpatialEntityTypeId` FOREIGN KEY (`EntityType`) REFERENCES `spatialentities_entitytypes` (`SpatialEntityTypeId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2531 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2531 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -263,14 +260,14 @@ CREATE TABLE `spatialentities_entitymetadata` (
   `EntityId` int NOT NULL,
   `FieldId` int NOT NULL,
   `FieldValue` varchar(256) DEFAULT NULL,
-  `DateCreated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `DateCreated` datetime NOT NULL DEFAULT TIMESTAMP,
   `LastModified` datetime DEFAULT NULL,
   PRIMARY KEY (`MetadataId`),
   UNIQUE KEY `u_EntityMetadata_EntityId_FieldId` (`EntityId`,`FieldId`),
   KEY `fk_EntityMetadata_SpatialEntities_MetadataFields_FieldId` (`FieldId`),
   CONSTRAINT `fk_EntityMetadata_SpatialEntities_Entities_EntityId` FOREIGN KEY (`EntityId`) REFERENCES `spatialentities_entities` (`EntityId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_EntityMetadata_SpatialEntities_MetadataFields_FieldId` FOREIGN KEY (`FieldId`) REFERENCES `spatialentities_metadatafields` (`FieldId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -296,7 +293,7 @@ CREATE TABLE `spatialentities_entitytypes` (
   `SpatialEntityTypeDescription` varchar(500) DEFAULT NULL,
   PRIMARY KEY (`SpatialEntityTypeId`),
   UNIQUE KEY `SpatialEntityTypeName` (`SpatialEntityTypeName`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -325,7 +322,7 @@ CREATE TABLE `spatialentities_metadatafields` (
   UNIQUE KEY `FieldName` (`FieldName`),
   KEY `fk_MetadataFields_SpatialEntities_MetadataFieldTypes` (`FieldType`),
   CONSTRAINT `fk_MetadataFields_SpatialEntities_MetadataFieldTypes` FOREIGN KEY (`FieldType`) REFERENCES `spatialentities_metadatafieldtypes` (`TypeName`) ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -334,11 +331,11 @@ CREATE TABLE `spatialentities_metadatafields` (
 
 LOCK TABLES `spatialentities_metadatafields` WRITE;
 /*!40000 ALTER TABLE `spatialentities_metadatafields` DISABLE KEYS */;
-/*!40000 ALTER TABLE `spatialentities_metadatafields` ENABLE KEYS */;
+/*!40000 ALTER TABLE `spatialentities_metadatafields` 
+--
+-- Table structure for table `spatialentities_metadatafieldtypes`ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `spatialentities_metadatafieldtypes`
 --
 
 DROP TABLE IF EXISTS `spatialentities_metadatafieldtypes`;
@@ -348,7 +345,7 @@ CREATE TABLE `spatialentities_metadatafieldtypes` (
   `TypeName` varchar(50) NOT NULL,
   `TypeDescription` varchar(500) DEFAULT NULL,
   PRIMARY KEY (`TypeName`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
